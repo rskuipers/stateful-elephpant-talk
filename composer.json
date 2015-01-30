@@ -1,0 +1,13 @@
+{
+    "name": "rskuipers/stateful-elephpant-talk",
+    "description": "Code for stateful elephpant talk",
+    "require": {
+        "php": ">=5.3.3",
+        "silex/silex": "~1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Application\\": "src/"
+        }
+    }
+}
