@@ -3,7 +3,9 @@
     "description": "Code for stateful elephpant talk",
     "require": {
         "php": ">=5.3.3",
-        "silex/silex": "~1.1"
+        "silex/silex": "~1.1",
+        "twig/twig": "~1.18",
+        "symfony/twig-bridge": "~2.6"
     },
     "autoload": {
         "psr-4": {

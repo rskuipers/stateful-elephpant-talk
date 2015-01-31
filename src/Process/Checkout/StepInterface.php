@@ -2,10 +2,10 @@
 
 namespace Application\Process\Checkout;
 
-use Symfony\Component\HttpFoundation\Request;
+use Application\Process\Context;
 
 interface StepInterface
 {
-    public function display(Request $request);
-    public function forward(Request $request);
+    public function display(Context $context);
+    public function forward(Context $context);
 }

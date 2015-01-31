@@ -7,6 +7,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 class Coordinator
 {
@@ -14,6 +15,11 @@ class Coordinator
      * @var StepInterface[]
      */
     protected $steps;
+
+    /**
+     * @var StepInterface[]
+     */
+    protected $orderedSteps;
 
     /**
      * @var Application
@@ -26,54 +32,94 @@ class Coordinator
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        $this->add('details', '/checkout/details')
-            ->add('payment', '/checkout/payment')
-            ->add('review', '/checkout/review');
     }
 
+    /**
+     * @param Request $request
+     * @param $stepName
+     * @return RedirectResponse
+     */
     public function forward(Request $request, $stepName)
     {
         if (!array_key_exists($stepName, $this->steps)) {
             throw new NotFoundHttpException('Step not found');
         }
 
-        $step = $this->app["step.{$stepName}"];
+        $context = $this->buildContext($request);
 
-        $result = $step->forward($request);
+        $step = $context->getCurrentStep();
+
+        $result = $step->forward($context);
         if ($result === true) {
-            while (key($this->steps) !== $stepName) {
-                next($this->steps);
-            }
+            $nextStep = $context->getNextStep()->getName();
 
-            $next = next($this->steps);
-
-            return new RedirectResponse($next);
+            return new RedirectResponse($this->getUrlGenerator()->generate('display', ['stepName' => $nextStep]));
         }
 
         return $result;
     }
 
+    /**
+     * @param Request $request
+     * @param $stepName
+     * @return mixed
+     */
     public function display(Request $request, $stepName)
     {
         if (!array_key_exists($stepName, $this->steps)) {
-            throw new NotFoundHttpException('Step not found');
+            throw new NotFoundHttpException("Step {$stepName} not found");
         }
 
-        $step = $this->app["step.{$stepName}"];
+        $context = $this->buildContext($request);
 
-        return $step->display($request);
+        $step = $context->getCurrentStep();
+
+        return $step->display($context);
     }
 
     /**
-     * @param $step
-     * @param $route
+     * @param array $steps
+     */
+    public function build(array $steps)
+    {
+        foreach ($steps as $step) {
+            $this->add($step);
+        }
+    }
+
+    /**
+     * @param $stepName
      * @return $this
      */
-    protected function add($step, $route)
+    public function add($stepName)
     {
-        $this->steps[$step] = $route;
+        $step = $this->app["step.{$stepName}"];
+
+        $this->steps[$stepName] = $this->orderedSteps[] = $step;
 
         return $this;
+    }
+
+    /**
+     * @param Request $request
+     * @return Context
+     */
+    protected function buildContext(Request $request)
+    {
+        $currentStep = $this->steps[$request->get('stepName')];
+
+        $context = new Context($this->orderedSteps, $currentStep);
+
+        $context->setRequest($request);
+
+        return $context;
+    }
+
+    /**
+     * @return UrlGenerator
+     */
+    protected function getUrlGenerator()
+    {
+        return $this->app['url_generator'];
     }
 }
