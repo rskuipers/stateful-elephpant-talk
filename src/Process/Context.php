@@ -33,7 +33,7 @@ class Context
     protected $request;
 
     /**
-     * @param array $steps
+     * @param StepInterface[] $steps
      * @param StepInterface $currentStep
      */
     public function __construct(array $steps, StepInterface $currentStep)
@@ -58,7 +58,7 @@ class Context
     }
 
     /**
-     * @return mixed
+     * @return StepInterface
      */
     public function getPreviousStep()
     {
@@ -66,11 +66,27 @@ class Context
     }
 
     /**
-     * @return mixed
+     * @return StepInterface
      */
     public function getNextStep()
     {
         return $this->nextStep;
+    }
+
+    /**
+     * @return StepInterface
+     */
+    public function getFirstStep()
+    {
+        return $this->steps[0];
+    }
+
+    /**
+     * @return StepInterface
+     */
+    public function getLastStep()
+    {
+        return end($this->steps);
     }
 
     /**

@@ -36,13 +36,13 @@ class Coordinator
 
     /**
      * @param Request $request
-     * @param $stepName
+     * @param string $stepName
      * @return RedirectResponse
      */
     public function forward(Request $request, $stepName)
     {
         if (!array_key_exists($stepName, $this->steps)) {
-            throw new NotFoundHttpException('Step not found');
+            throw new NotFoundHttpException("Step {$stepName} not found");
         }
 
         $context = $this->buildContext($request);
@@ -61,7 +61,7 @@ class Coordinator
 
     /**
      * @param Request $request
-     * @param $stepName
+     * @param string $stepName
      * @return mixed
      */
     public function display(Request $request, $stepName)
@@ -78,7 +78,7 @@ class Coordinator
     }
 
     /**
-     * @param array $steps
+     * @param StepInterface[] $steps
      */
     public function build(array $steps)
     {
@@ -88,10 +88,10 @@ class Coordinator
     }
 
     /**
-     * @param $stepName
+     * @param string $stepName
      * @return $this
      */
-    public function add($stepName)
+    protected function add($stepName)
     {
         $step = $this->app["step.{$stepName}"];
 
@@ -109,7 +109,6 @@ class Coordinator
         $currentStep = $this->steps[$request->get('stepName')];
 
         $context = new Context($this->orderedSteps, $currentStep);
-
         $context->setRequest($request);
 
         return $context;
