@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7bc4af9575d6b429fecbc4b8e01cf9d8",
+    "hash": "76242a28bd9ec89ca1713f2ca0e16f83",
     "packages": [
         {
             "name": "pimple/pimple",
@@ -288,6 +288,53 @@
             "time": "2015-01-05 14:28:40"
         },
         {
+            "name": "symfony/expression-language",
+            "version": "v2.6.4",
+            "target-dir": "Symfony/Component/ExpressionLanguage",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/expression-language.git",
+                "reference": "c3edb04f66efa8fb26e6da257dd888a694626317"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/c3edb04f66efa8fb26e6da257dd888a694626317",
+                "reference": "c3edb04f66efa8fb26e6da257dd888a694626317",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\ExpressionLanguage\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony ExpressionLanguage Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-01-03 08:01:59"
+        },
+        {
             "name": "symfony/http-foundation",
             "version": "v2.6.3",
             "target-dir": "Symfony/Component/HttpFoundation",
@@ -416,6 +463,64 @@
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
             "time": "2015-01-07 14:47:29"
+        },
+        {
+            "name": "symfony/property-access",
+            "version": "v2.6.4",
+            "target-dir": "Symfony/Component/PropertyAccess",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/PropertyAccess.git",
+                "reference": "9c0b67ea9c1a2b59cc7afae9177cd3c5ca5ac608"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/PropertyAccess/zipball/9c0b67ea9c1a2b59cc7afae9177cd3c5ca5ac608",
+                "reference": "9c0b67ea9c1a2b59cc7afae9177cd3c5ca5ac608",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.6-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\PropertyAccess\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony PropertyAccess Component",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "access",
+                "array",
+                "extraction",
+                "index",
+                "injection",
+                "object",
+                "property",
+                "property path",
+                "reflection"
+            ],
+            "time": "2015-01-25 04:39:26"
         },
         {
             "name": "symfony/routing",
@@ -735,6 +840,56 @@
                 "templating"
             ],
             "time": "2015-01-25 17:32:08"
+        },
+        {
+            "name": "winzou/state-machine",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/winzou/state-machine.git",
+                "reference": "cfc791b8f1dbb68e0aebbe279b680664d525b8c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/winzou/state-machine/zipball/cfc791b8f1dbb68e0aebbe279b680664d525b8c5",
+                "reference": "cfc791b8f1dbb68e0aebbe279b680664d525b8c5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/event-dispatcher": "~2.1",
+                "symfony/expression-language": "~2.4",
+                "symfony/property-access": "~2.1"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SM": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandre Bacco",
+                    "email": "alexandre.bacco@gmail.com",
+                    "homepage": "http://alex.bacco.fr"
+                }
+            ],
+            "description": "A very lightweight yet powerful PHP state machine",
+            "homepage": "https://github.com/winzou/StateMachine",
+            "keywords": [
+                "callback",
+                "event",
+                "state",
+                "statemachine"
+            ],
+            "time": "2014-11-27 07:10:26"
         }
     ],
     "packages-dev": [],

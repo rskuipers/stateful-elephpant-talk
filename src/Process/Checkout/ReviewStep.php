@@ -4,7 +4,7 @@ namespace Application\Process\Checkout;
 
 use Application\Process\Context;
 
-class DetailsStep extends AbstractStep
+class ReviewStep extends AbstractStep
 {
     /**
      * {@inheritdoc}
@@ -19,14 +19,9 @@ class DetailsStep extends AbstractStep
      */
     public function forward(Context $context)
     {
-        $request = $context->getRequest();
-
-        if ($email = $request->get('email')) {
-            $this->getOrder()->setEmail($email);
-            return true;
-        }
-
-        return $this->render($context);
+        $stateMachine = $this->stateMachineFactory->get($this->getOrder());
+        $stateMachine->apply('create');
+        return true;
     }
 
     /**
@@ -35,8 +30,9 @@ class DetailsStep extends AbstractStep
      */
     protected function render(Context $context)
     {
-        return $this->twig->render('checkout/details.html.twig', [
-            'context' => $context
+        return $this->twig->render('checkout/review.html.twig', [
+            'context' => $context,
+            'order' => $this->getOrder(),
         ]);
     }
 }

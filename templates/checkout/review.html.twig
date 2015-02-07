@@ -1,0 +1,7 @@
+State: {{ order.state }}<br>
+Email: {{ order.email }}<br>
+Method: {{ order.paymentMethod }}<br>
+
+<form method="post" action="{{ path('forward', { stepName: context.currentStep.name }) }}">
+    <button>Finish</button>
+</form>

@@ -27,6 +27,16 @@ class Coordinator
     protected $app;
 
     /**
+     * @var string
+     */
+    protected $redirect;
+
+    /**
+     * @var \Closure
+     */
+    protected $validator;
+
+    /**
      * @param Application $app
      */
     public function __construct(Application $app)
@@ -41,6 +51,10 @@ class Coordinator
      */
     public function forward(Request $request, $stepName)
     {
+        if (!$this->validate()) {
+            return $this->redirect();
+        }
+
         if (!array_key_exists($stepName, $this->steps)) {
             throw new NotFoundHttpException("Step {$stepName} not found");
         }
@@ -51,6 +65,10 @@ class Coordinator
 
         $result = $step->forward($context);
         if ($result === true) {
+            if ($context->getCurrentStep() === $context->getLastStep()) {
+                return $this->redirect();
+            }
+
             $nextStep = $context->getNextStep()->getName();
 
             return new RedirectResponse($this->getUrlGenerator()->generate('display', ['stepName' => $nextStep]));
@@ -66,6 +84,10 @@ class Coordinator
      */
     public function display(Request $request, $stepName)
     {
+        if (!$this->validate()) {
+            return $this->redirect();
+        }
+
         if (!array_key_exists($stepName, $this->steps)) {
             throw new NotFoundHttpException("Step {$stepName} not found");
         }
@@ -87,6 +109,7 @@ class Coordinator
         }
     }
 
+
     /**
      * @param string $stepName
      * @return $this
@@ -98,6 +121,26 @@ class Coordinator
         $this->steps[$stepName] = $this->orderedSteps[] = $step;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function validate()
+    {
+        if (!$this->getValidator() instanceof \Closure) {
+            return true;
+        }
+        $validator = $this->getValidator();
+        return (bool) call_user_func($validator);
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function redirect()
+    {
+        return new RedirectResponse($this->getUrlGenerator()->generate($this->getRedirect()));
     }
 
     /**
@@ -120,5 +163,37 @@ class Coordinator
     protected function getUrlGenerator()
     {
         return $this->app['url_generator'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirect()
+    {
+        return $this->redirect;
+    }
+
+    /**
+     * @param string $redirect
+     */
+    public function setRedirect($redirect)
+    {
+        $this->redirect = $redirect;
+    }
+
+    /**
+     * @return callable
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
+     * @param \Closure $validator
+     */
+    public function setValidator(\Closure $validator)
+    {
+        $this->validator = $validator;
     }
 }

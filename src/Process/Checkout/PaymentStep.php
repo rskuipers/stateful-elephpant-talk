@@ -21,7 +21,8 @@ class PaymentStep extends AbstractStep
     {
         $request = $context->getRequest();
 
-        if ($request->get('method')) {
+        if ($method = $request->get('method')) {
+            $this->getOrder()->setPaymentMethod($method);
             return true;
         }
 

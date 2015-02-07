@@ -1,0 +1,4 @@
+State: {{ order.state }}<br>
+<a href="{{ path('order/transition', {transition: 'complete'}) }}">Complete</a><br>
+<a href="{{ path('order/transition', {transition: 'cancel'}) }}">Cancel</a><br>
+<a href="{{ path('order/transition', {transition: 'refund'}) }}">Refund</a>

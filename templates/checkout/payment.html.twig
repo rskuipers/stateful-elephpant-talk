@@ -1,12 +1,12 @@
 <form method="post" action="{{ path('forward', {stepName: context.currentStep.name}) }}">
     <label>
-        <input type="radio" name="method" value="PayPal" />
-        PayPal
+        <input type="radio" name="method" value="Bank Transfer" />
+        Bank Transfer
     </label>
 
     <label>
-        <input type="radio" name="method" value="iDeal" />
-        iDeal
+        <input type="radio" name="method" value="PayPal" />
+        PayPal
     </label>
 
     <button>Submit</button>
