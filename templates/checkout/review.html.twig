@@ -1,7 +1,20 @@
-State: {{ order.state }}<br>
-Email: {{ order.email }}<br>
-Method: {{ order.paymentMethod }}<br>
+{% extends 'layout.html.twig' %}
 
-<form method="post" action="{{ path('forward', { stepName: context.currentStep.name }) }}">
-    <button>Finish</button>
-</form>
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">State:</div>
+        <div class="col-md-7">{{ order.state }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">Email:</div>
+        <div class="col-md-7">{{ order.email }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">Method:</div>
+        <div class="col-md-7">{{ order.paymentMethod }}</div>
+    </div>
+
+    <form method="post" action="{{ path(context.coordinator.forwardRoute, { stepName: context.currentStep.name }) }}">
+        <button class="btn btn-primary">Finish</button>
+    </form>
+{% endblock %}

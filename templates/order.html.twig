@@ -1,4 +1,18 @@
-State: {{ order.state }}<br>
-<a href="{{ path('order/transition', {transition: 'complete'}) }}">Complete</a><br>
-<a href="{{ path('order/transition', {transition: 'cancel'}) }}">Cancel</a><br>
-<a href="{{ path('order/transition', {transition: 'refund'}) }}">Refund</a>
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="text-center text-uppercase">{{ order.state }}</h1>
+    </div>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a href="{{ path('order/transition', {transition: 'complete'}) }}" class="btn btn-success btn-lg"{% if not stateMachine.can('complete') %} disabled{% endif %}>Complete</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('order/transition', {transition: 'refund'}) }}" class="btn btn-warning btn-lg"{% if not stateMachine.can('refund') %} disabled{% endif %}>Refund</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('order/transition', {transition: 'cancel'}) }}" class="btn btn-danger btn-lg"{% if not stateMachine.can('cancel') %} disabled{% endif %}>Cancel</a>
+        </div>
+    </div>
+{% endblock %}

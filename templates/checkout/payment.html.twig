@@ -1,13 +1,21 @@
-<form method="post" action="{{ path('forward', {stepName: context.currentStep.name}) }}">
-    <label>
-        <input type="radio" name="method" value="Bank Transfer" />
-        Bank Transfer
-    </label>
+{% extends 'layout.html.twig' %}
 
-    <label>
-        <input type="radio" name="method" value="PayPal" />
-        PayPal
-    </label>
+{% block content %}
+    <form method="post" action="{{ path(context.coordinator.forwardRoute, {stepName: context.currentStep.name}) }}">
+        <div class="radio">
+            <label>
+                <input type="radio" name="method" value="Bank Transfer" />
+                Bank Transfer
+            </label>
+        </div>
 
-    <button>Submit</button>
-</form>
+        <div class="radio">
+            <label>
+                <input type="radio" name="method" value="PayPal" />
+                PayPal
+            </label>
+        </div>
+
+        <button class="btn btn-primary">Next</button>
+    </form>
+{% endblock %}

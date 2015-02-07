@@ -35,8 +35,12 @@ abstract class AbstractStep implements StepInterface
      * @param SessionInterface $session
      * @param FactoryInterface $stateMachineFactory
      */
-    public function __construct($name, Twig_Environment $twig, SessionInterface $session, FactoryInterface $stateMachineFactory)
-    {
+    public function __construct(
+        $name,
+        Twig_Environment $twig,
+        SessionInterface $session,
+        FactoryInterface $stateMachineFactory
+    ) {
         $this->twig = $twig;
         $this->name = $name;
         $this->session = $session;
@@ -44,7 +48,7 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

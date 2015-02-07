@@ -17,8 +17,11 @@ $app->get('/', function (Application $app) {
 $order = $app['session']->get('order');
 
 $app->get('/order', function (Application $app) use ($order) {
+    /** @var StateMachineInterface $stateMachine */
+    $stateMachine = $app['statemachine.factory']->get($order);
     return $app['twig']->render('order.html.twig', [
         'order' => $order,
+        'stateMachine' => $stateMachine,
     ]);
 })->bind('order');
 

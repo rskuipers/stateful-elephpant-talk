@@ -18,11 +18,14 @@ $app['step.review'] = new ReviewStep('review', $app['twig'], $app['session'], $a
 $order = $app['session']->get('order');
 
 $coordinator = new Coordinator($app);
-$coordinator->build(['details', 'payment', 'review']);
-$coordinator->setRedirect('order');
-$coordinator->setValidator(function () use ($order) {
-    return $order->getState() === Order::STATE_NEW;
-});
+$coordinator->build(['details', 'payment', 'review'])
+    ->setForwardRoute('checkout/forward')
+    ->setDisplayRoute('checkout/display')
+    ->setRedirectRoute('order')
+    ->setValidator(function () use ($order) {
+        return $order->getState() === Order::STATE_NEW;
+    });
 
-$app->get('/checkout/{stepName}', [$coordinator, 'display'])->bind('display');
-$app->post('/checkout/{stepName}/forward', [$coordinator, 'forward'])->bind('forward');
+$app->get('/checkout', [$coordinator, 'start'])->bind('checkout/start');
+$app->get('/checkout/{stepName}', [$coordinator, 'display'])->bind('checkout/display');
+$app->post('/checkout/{stepName}/forward', [$coordinator, 'forward'])->bind('checkout/forward');

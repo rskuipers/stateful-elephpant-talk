@@ -17,4 +17,9 @@ interface StepInterface
      * @return mixed
      */
     public function forward(Context $context);
+
+    /**
+     * @return string
+     */
+    public function getName();
 }

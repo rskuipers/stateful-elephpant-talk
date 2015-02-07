@@ -33,13 +33,20 @@ class Context
     protected $request;
 
     /**
+     * @var Coordinator
+     */
+    protected $coordinator;
+
+    /**
      * @param StepInterface[] $steps
      * @param StepInterface $currentStep
+     * @param Coordinator $coordinator
      */
-    public function __construct(array $steps, StepInterface $currentStep)
+    public function __construct(array $steps, StepInterface $currentStep, Coordinator $coordinator)
     {
         $this->steps = $steps;
         $this->currentStep = $currentStep;
+        $this->coordinator = $coordinator;
 
         foreach ($steps as $index => $step) {
             if ($step === $currentStep) {
@@ -103,5 +110,13 @@ class Context
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * @return Coordinator
+     */
+    public function getCoordinator()
+    {
+        return $this->coordinator;
     }
 }

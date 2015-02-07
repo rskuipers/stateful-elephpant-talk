@@ -29,7 +29,7 @@ class Coordinator
     /**
      * @var string
      */
-    protected $redirect;
+    protected $redirectRoute;
 
     /**
      * @var \Closure
@@ -37,11 +37,38 @@ class Coordinator
     protected $validator;
 
     /**
+     * @var string
+     */
+    protected $displayRoute;
+
+    /**
+     * @var string
+     */
+    protected $forwardRoute;
+
+    /**
      * @param Application $app
      */
     public function __construct(Application $app)
     {
         $this->app = $app;
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function start(Request $request)
+    {
+        if (!$this->validate()) {
+            return $this->redirect();
+        }
+
+        $context = $this->buildContext($request);
+
+        return new RedirectResponse($this->getUrlGenerator()->generate($this->getDisplayRoute(), [
+            'stepName' => $context->getFirstStep()->getName(),
+        ]));
     }
 
     /**
@@ -71,7 +98,9 @@ class Coordinator
 
             $nextStep = $context->getNextStep()->getName();
 
-            return new RedirectResponse($this->getUrlGenerator()->generate('display', ['stepName' => $nextStep]));
+            return new RedirectResponse($this->getUrlGenerator()->generate($this->getDisplayRoute(), [
+                'stepName' => $nextStep
+            ]));
         }
 
         return $result;
@@ -101,12 +130,15 @@ class Coordinator
 
     /**
      * @param StepInterface[] $steps
+     * @return $this
      */
     public function build(array $steps)
     {
         foreach ($steps as $step) {
             $this->add($step);
         }
+
+        return $this;
     }
 
 
@@ -132,7 +164,7 @@ class Coordinator
             return true;
         }
         $validator = $this->getValidator();
-        return (bool) call_user_func($validator);
+        return (bool)call_user_func($validator);
     }
 
     /**
@@ -140,7 +172,7 @@ class Coordinator
      */
     public function redirect()
     {
-        return new RedirectResponse($this->getUrlGenerator()->generate($this->getRedirect()));
+        return new RedirectResponse($this->getUrlGenerator()->generate($this->getRedirectRoute()));
     }
 
     /**
@@ -149,9 +181,11 @@ class Coordinator
      */
     protected function buildContext(Request $request)
     {
-        $currentStep = $this->steps[$request->get('stepName')];
+        $stepName = $request->get('stepName');
 
-        $context = new Context($this->orderedSteps, $currentStep);
+        $currentStep = $this->steps[$stepName ?: $this->orderedSteps[0]->getName()];
+
+        $context = new Context($this->orderedSteps, $currentStep, $this);
         $context->setRequest($request);
 
         return $context;
@@ -168,17 +202,55 @@ class Coordinator
     /**
      * @return string
      */
-    public function getRedirect()
+    public function getRedirectRoute()
     {
-        return $this->redirect;
+        return $this->redirectRoute;
     }
 
     /**
-     * @param string $redirect
+     * @param string $redirectRoute
+     * @return $this
      */
-    public function setRedirect($redirect)
+    public function setRedirectRoute($redirectRoute)
     {
-        $this->redirect = $redirect;
+        $this->redirectRoute = $redirectRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayRoute()
+    {
+        return $this->displayRoute;
+    }
+
+    /**
+     * @param string $displayRoute
+     * @return $this
+     */
+    public function setDisplayRoute($displayRoute)
+    {
+        $this->displayRoute = $displayRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getForwardRoute()
+    {
+        return $this->forwardRoute;
+    }
+
+    /**
+     * @param string $forwardRoute
+     * @return $this
+     */
+    public function setForwardRoute($forwardRoute)
+    {
+        $this->forwardRoute = $forwardRoute;
+        return $this;
     }
 
     /**
@@ -191,9 +263,11 @@ class Coordinator
 
     /**
      * @param \Closure $validator
+     * @return $this
      */
     public function setValidator(\Closure $validator)
     {
         $this->validator = $validator;
+        return $this;
     }
 }
