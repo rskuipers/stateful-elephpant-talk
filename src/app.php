@@ -20,6 +20,5 @@ $app['twig.options'] = ['cache' => __DIR__.'/../var/cache/twig'];
 
 require_once __DIR__ . '/statemachine.php';
 require_once __DIR__ . '/routes.php';
-require_once __DIR__ . '/checkout.php';
 
 return $app;
