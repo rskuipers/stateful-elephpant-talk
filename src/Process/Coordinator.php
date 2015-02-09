@@ -129,7 +129,7 @@ class Coordinator
     }
 
     /**
-     * @param StepInterface[] $steps
+     * @param string[] $steps
      * @return $this
      */
     public function build(array $steps)
