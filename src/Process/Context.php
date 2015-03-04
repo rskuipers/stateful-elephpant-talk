@@ -18,12 +18,12 @@ class Context
     protected $currentStep;
 
     /**
-     * @var StepInterface
+     * @var StepInterface|null
      */
     protected $nextStep;
 
     /**
-     * @var StepInterface
+     * @var StepInterface|null
      */
     protected $previousStep;
 
@@ -50,8 +50,8 @@ class Context
 
         foreach ($steps as $index => $step) {
             if ($step === $currentStep) {
-                $this->previousStep = $this->steps[$index-1];
-                $this->nextStep = $this->steps[$index+1];
+                $this->previousStep = $index-1 >= 0 ? $this->steps[$index-1] : null;
+                $this->nextStep = $index+1 < count($this->steps) ?$this->steps[$index+1] : null;
             }
         }
     }
