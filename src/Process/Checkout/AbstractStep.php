@@ -3,7 +3,6 @@
 namespace Application\Process\Checkout;
 
 use Application\Model\Order;
-use SM\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig_Environment;
 
