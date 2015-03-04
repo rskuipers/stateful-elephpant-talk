@@ -11,7 +11,9 @@ class DetailsStep extends AbstractStep
      */
     public function display(Context $context)
     {
-        return $this->render($context);
+        return $this->twig->render('checkout/details.html.twig', [
+            'context' => $context
+        ]);
     }
 
     /**
@@ -26,17 +28,6 @@ class DetailsStep extends AbstractStep
             return true;
         }
 
-        return $this->render($context);
-    }
-
-    /**
-     * @param Context $context
-     * @return string
-     */
-    protected function render(Context $context)
-    {
-        return $this->twig->render('checkout/details.html.twig', [
-            'context' => $context
-        ]);
+        return $this->display($context);
     }
 }
