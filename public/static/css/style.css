@@ -1,0 +1,11 @@
+.btn-success.disabled,
+.btn-success:disabled,
+.btn-success[disabled],
+.btn-warning.disabled,
+.btn-warning:disabled,
+.btn-warning[disabled],
+.btn-danger.disabled,
+.btn-danger:disabled,
+.btn-danger[disabled] {
+    background-color: black;
+}

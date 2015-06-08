@@ -129,7 +129,7 @@ class Coordinator
     }
 
     /**
-     * @param string[] $steps
+     * @param StepInterface[] $steps
      * @return $this
      */
     public function build(array $steps)
@@ -143,14 +143,12 @@ class Coordinator
 
 
     /**
-     * @param string $stepName
+     * @param StepInterface $step
      * @return $this
      */
-    protected function add($stepName)
+    protected function add($step)
     {
-        $step = $this->app["step.{$stepName}"];
-
-        $this->steps[$stepName] = $this->orderedSteps[] = $step;
+        $this->steps[$step->getName()] = $this->orderedSteps[] = $step;
 
         return $this;
     }
@@ -181,6 +179,10 @@ class Coordinator
      */
     protected function buildContext(Request $request)
     {
+        if (count($this->steps) === 0) {
+            throw new \LogicException('Context not built: no steps found');
+        }
+
         $stepName = $request->get('stepName');
 
         $currentStep = $this->steps[$stepName ?: $this->orderedSteps[0]->getName()];

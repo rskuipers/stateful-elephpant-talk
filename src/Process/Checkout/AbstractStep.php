@@ -3,7 +3,6 @@
 namespace Application\Process\Checkout;
 
 use Application\Model\Order;
-use SM\Factory\FactoryInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig_Environment;
 
@@ -25,26 +24,18 @@ abstract class AbstractStep implements StepInterface
     protected $session;
 
     /**
-     * @var FactoryInterface
-     */
-    protected $stateMachineFactory;
-
-    /**
      * @param string $name
      * @param Twig_Environment $twig
      * @param SessionInterface $session
-     * @param FactoryInterface $stateMachineFactory
      */
     public function __construct(
         $name,
         Twig_Environment $twig,
-        SessionInterface $session,
-        FactoryInterface $stateMachineFactory
+        SessionInterface $session
     ) {
         $this->twig = $twig;
         $this->name = $name;
         $this->session = $session;
-        $this->stateMachineFactory = $stateMachineFactory;
     }
 
     /**

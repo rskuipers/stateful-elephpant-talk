@@ -10,15 +10,16 @@ use Application\Process\Coordinator;
 use Silex\Application;
 
 /** @var Application $app */
-$app['step.details'] = new DetailsStep('details', $app['twig'], $app['session'], $app['statemachine.factory']);
-$app['step.payment'] = new PaymentStep('payment', $app['twig'], $app['session'], $app['statemachine.factory']);
-$app['step.review'] = new ReviewStep('review', $app['twig'], $app['session'], $app['statemachine.factory']);
 
 /** @var Order $order */
 $order = $app['session']->get('order');
 
 $coordinator = new Coordinator($app);
-$coordinator->build(['details', 'payment', 'review'])
+$coordinator->build([
+        new DetailsStep('details', $app['twig'], $app['session']),
+        new PaymentStep('payment', $app['twig'], $app['session']),
+        new ReviewStep('review', $app['twig'], $app['session'], $app['statemachine.factory']),
+    ])
     ->setForwardRoute('checkout/forward')
     ->setDisplayRoute('checkout/display')
     ->setRedirectRoute('order')
