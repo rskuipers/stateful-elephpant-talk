@@ -179,6 +179,10 @@ class Coordinator
      */
     protected function buildContext(Request $request)
     {
+        if (count($this->steps) === 0) {
+            throw new \LogicException('Context not built: no steps found');
+        }
+
         $stepName = $request->get('stepName');
 
         $currentStep = $this->steps[$stepName ?: $this->orderedSteps[0]->getName()];

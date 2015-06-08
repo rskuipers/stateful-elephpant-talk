@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $app->get('/', function (Application $app) {
     $app['session']->set('order', new Order());
-    return new RedirectResponse('/checkout/details');
+    return new RedirectResponse($app['url_generator']->generate('order'));
 })->bind('homepage');
 
 $order = $app['session']->get('order');
