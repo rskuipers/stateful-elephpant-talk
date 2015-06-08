@@ -74,6 +74,28 @@ class Coordinator
     /**
      * @param Request $request
      * @param string $stepName
+     * @return mixed
+     */
+    public function display(Request $request, $stepName)
+    {
+        if (!$this->validate()) {
+            return $this->redirect();
+        }
+
+        if (!array_key_exists($stepName, $this->steps)) {
+            throw new NotFoundHttpException("Step {$stepName} not found");
+        }
+
+        $context = $this->buildContext($request);
+
+        $step = $context->getCurrentStep();
+
+        return $step->display($context);
+    }
+
+    /**
+     * @param Request $request
+     * @param string $stepName
      * @return RedirectResponse
      */
     public function forward(Request $request, $stepName)
@@ -107,29 +129,7 @@ class Coordinator
     }
 
     /**
-     * @param Request $request
-     * @param string $stepName
-     * @return mixed
-     */
-    public function display(Request $request, $stepName)
-    {
-        if (!$this->validate()) {
-            return $this->redirect();
-        }
-
-        if (!array_key_exists($stepName, $this->steps)) {
-            throw new NotFoundHttpException("Step {$stepName} not found");
-        }
-
-        $context = $this->buildContext($request);
-
-        $step = $context->getCurrentStep();
-
-        return $step->display($context);
-    }
-
-    /**
-     * @param string[] $steps
+     * @param StepInterface[] $steps
      * @return $this
      */
     public function build(array $steps)
@@ -143,14 +143,12 @@ class Coordinator
 
 
     /**
-     * @param string $stepName
+     * @param StepInterface $step
      * @return $this
      */
-    protected function add($stepName)
+    protected function add(StepInterface $step)
     {
-        $step = $this->app["step.{$stepName}"];
-
-        $this->steps[$stepName] = $this->orderedSteps[] = $step;
+        $this->steps[$step->getName()] = $this->orderedSteps[] = $step;
 
         return $this;
     }
