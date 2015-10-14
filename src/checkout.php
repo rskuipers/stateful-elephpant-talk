@@ -10,7 +10,6 @@ $coordinator->setDisplayRoute('checkout/display')
     ->setRedirectRoute('order')
     ->build([]);
 
-
 $app->get('/checkout/start', [$coordinator, 'start'])->bind('checkout/start');
 $app->get('/checkout/{stepName}', [$coordinator, 'display'])->bind('checkout/display');
 $app->post('/checkout/{stepName}/forward', [$coordinator, 'forward'])->bind('checkout/forward');
