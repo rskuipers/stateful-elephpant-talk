@@ -39,7 +39,7 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

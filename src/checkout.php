@@ -5,7 +5,8 @@ use Application\Process\Coordinator;
 /** @var $app \Silex\Application */
 
 $coordinator = new Coordinator($app);
-$coordinator->setDisplayRoute('checkout/display')
+$coordinator
+    ->setDisplayRoute('checkout/display')
     ->setForwardRoute('checkout/forward')
     ->setRedirectRoute('order')
     ->build([]);
