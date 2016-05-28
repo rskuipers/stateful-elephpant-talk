@@ -1,16 +1,18 @@
 <?php
 
-use Application\Process\Coordinator;
+use Application\Process\Checkout;
 
 /** @var $app \Silex\Application */
 
-$coordinator = new Coordinator($app);
-$coordinator
+$checkout = new Checkout($app);
+$checkout
     ->setDisplayRoute('checkout/display')
     ->setForwardRoute('checkout/forward')
     ->setRedirectRoute('order')
-    ->build([]);
+    ->build([
+        new Checkout\Details('details', $app['twig'], $app['session'])
+    ]);
 
-$app->get('/checkout/start', [$coordinator, 'start'])->bind('checkout/start');
-$app->get('/checkout/{stepName}', [$coordinator, 'display'])->bind('checkout/display');
-$app->post('/checkout/{stepName}/forward', [$coordinator, 'forward'])->bind('checkout/forward');
+$app->get('/checkout/start', [$checkout, 'start'])->bind('checkout/start');
+$app->get('/checkout/{stepName}', [$checkout, 'display'])->bind('checkout/display');
+$app->post('/checkout/{stepName}/forward', [$checkout, 'forward'])->bind('checkout/forward');

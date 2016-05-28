@@ -2,22 +2,22 @@
 
 namespace Application\Process;
 
-use Application\Process\Checkout\StepInterface;
+use Application\Process\Checkout\Step;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
-class Coordinator
+class Checkout
 {
     /**
-     * @var StepInterface[]
+     * @var Step[]
      */
     protected $steps;
 
     /**
-     * @var StepInterface[]
+     * @var Step[]
      */
     protected $orderedSteps;
 
@@ -129,7 +129,7 @@ class Coordinator
     }
 
     /**
-     * @param StepInterface[] $steps
+     * @param Step[] $steps
      * @return $this
      */
     public function build(array $steps)
@@ -143,10 +143,10 @@ class Coordinator
 
 
     /**
-     * @param StepInterface $step
+     * @param Step $step
      * @return $this
      */
-    protected function add(StepInterface $step)
+    protected function add(Step $step)
     {
         $this->steps[$step->getName()] = $this->orderedSteps[] = $step;
 

@@ -4,7 +4,7 @@ namespace Application\Process\Checkout;
 
 use Application\Process\Context;
 
-interface StepInterface
+interface Step
 {
     /**
      * @param Context $context

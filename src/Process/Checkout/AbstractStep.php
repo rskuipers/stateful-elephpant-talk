@@ -6,7 +6,7 @@ use Application\Model\Order;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig_Environment;
 
-abstract class AbstractStep implements StepInterface
+abstract class AbstractStep implements Step
 {
     /**
      * @var Twig_Environment

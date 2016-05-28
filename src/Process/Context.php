@@ -2,28 +2,28 @@
 
 namespace Application\Process;
 
-use Application\Process\Checkout\StepInterface;
+use Application\Process\Checkout\Step;
 use Symfony\Component\HttpFoundation\Request;
 
 class Context
 {
     /**
-     * @var StepInterface[]
+     * @var Step[]
      */
     protected $steps;
 
     /**
-     * @var StepInterface
+     * @var Step
      */
     protected $currentStep;
 
     /**
-     * @var StepInterface|null
+     * @var Step|null
      */
     protected $nextStep;
 
     /**
-     * @var StepInterface|null
+     * @var Step|null
      */
     protected $previousStep;
 
@@ -33,20 +33,20 @@ class Context
     protected $request;
 
     /**
-     * @var Coordinator
+     * @var Checkout
      */
-    protected $coordinator;
+    protected $checkout;
 
     /**
-     * @param StepInterface[] $steps
-     * @param StepInterface $currentStep
-     * @param Coordinator $coordinator
+     * @param Step[] $steps
+     * @param Step $currentStep
+     * @param Checkout $checkout
      */
-    public function __construct(array $steps, StepInterface $currentStep, Coordinator $coordinator)
+    public function __construct(array $steps, Step $currentStep, Checkout $checkout)
     {
         $this->steps = $steps;
         $this->currentStep = $currentStep;
-        $this->coordinator = $coordinator;
+        $this->checkout = $checkout;
 
         foreach ($steps as $index => $step) {
             if ($step === $currentStep) {
@@ -57,7 +57,7 @@ class Context
     }
 
     /**
-     * @return StepInterface
+     * @return Step
      */
     public function getCurrentStep()
     {
@@ -65,7 +65,7 @@ class Context
     }
 
     /**
-     * @return StepInterface
+     * @return Step
      */
     public function getPreviousStep()
     {
@@ -73,7 +73,7 @@ class Context
     }
 
     /**
-     * @return StepInterface
+     * @return Step
      */
     public function getNextStep()
     {
@@ -81,7 +81,7 @@ class Context
     }
 
     /**
-     * @return StepInterface
+     * @return Step
      */
     public function getFirstStep()
     {
@@ -89,7 +89,7 @@ class Context
     }
 
     /**
-     * @return StepInterface
+     * @return Step
      */
     public function getLastStep()
     {
@@ -113,10 +113,10 @@ class Context
     }
 
     /**
-     * @return Coordinator
+     * @return Checkout
      */
-    public function getCoordinator()
+    public function getCheckout()
     {
-        return $this->coordinator;
+        return $this->checkout;
     }
 }

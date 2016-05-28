@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <form method="post" action="{{ path(context.checkout.forwardRoute, {stepName: context.currentStep.name}) }}">
+        <div class="radio">
+            <label>
+                <input type="radio" name="method" value="Bank Transfer" />
+                Bank Transfer
+            </label>
+        </div>
+
+        <div class="radio">
+            <label>
+                <input type="radio" name="method" value="PayPal" />
+                PayPal
+            </label>
+        </div>
+
+        <button class="btn btn-primary">Next</button>
+    </form>
+{% endblock %}
